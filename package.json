@@ -1,0 +1,13 @@
+{
+  "name": "flowpass",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "compile": "node tools/compile-solc.js",
+    "dashboard": "python3 -m http.server 8080 --directory frontend",
+    "verify:testnet": "bash tools/verify-testnet.sh"
+  },
+  "devDependencies": {
+    "solc": "0.8.26"
+  }
+}

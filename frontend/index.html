@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlowPass Dashboard</title>
+  <style>
+    :root {
+      --bg: #f7f8f6;
+      --panel: #ffffff;
+      --ink: #1f2523;
+      --muted: #5b6661;
+      --line: #d8ddd7;
+      --green: #11865b;
+      --teal: #0f766e;
+      --blue: #2563eb;
+      --amber: #b7791f;
+      --red: #b42318;
+      --shadow: 0 8px 24px rgba(35, 45, 40, 0.08);
+      --radius: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.04;
+      font-weight: 740;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      max-width: 760px;
+      line-height: 1.55;
+    }
+
+    .network-pill {
+      min-width: 210px;
+      border: 1px solid #b7d8c8;
+      background: #eef8f2;
+      color: #0f5f42;
+      border-radius: 999px;
+      padding: 10px 14px;
+      text-align: center;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .metrics {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-bottom: 16px;
+    }
+
+    .metric,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .metric {
+      padding: 16px;
+      min-height: 112px;
+    }
+
+    .metric-label,
+    .field-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 680;
+      text-transform: uppercase;
+    }
+
+    .metric-value {
+      margin-top: 12px;
+      font-size: 24px;
+      font-weight: 760;
+      overflow-wrap: anywhere;
+    }
+
+    .metric-note {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .panel {
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .section-meta {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .proof-grid {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    }
+
+    .address-table,
+    .tx-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 11px 8px;
+      text-align: left;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .lifecycle {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--green);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: #fbfcfb;
+      min-height: 128px;
+    }
+
+    .step:nth-child(2) {
+      border-left-color: var(--blue);
+    }
+
+    .step:nth-child(3) {
+      border-left-color: var(--amber);
+    }
+
+    .step:nth-child(4) {
+      border-left-color: var(--red);
+    }
+
+    .step-title {
+      font-weight: 760;
+      margin-bottom: 10px;
+    }
+
+    .step-text {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .economics {
+      grid-template-columns: 310px minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .controls {
+      display: grid;
+      gap: 14px;
+    }
+
+    .control {
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+
+    .control:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .control-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--green);
+    }
+
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .scenario {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: #fbfcfb;
+      min-height: 116px;
+    }
+
+    .scenario-value {
+      font-size: 24px;
+      font-weight: 760;
+      margin-top: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .bar-stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr) 110px;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .bar-track {
+      height: 16px;
+      background: #edf0ec;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid #dfe5df;
+    }
+
+    .bar-fill {
+      height: 100%;
+      min-width: 2px;
+      width: 0;
+      transition: width 160ms ease;
+    }
+
+    .bar-fill.base {
+      background: var(--teal);
+    }
+
+    .bar-fill.discount {
+      background: var(--blue);
+    }
+
+    .bar-fill.lp {
+      background: var(--green);
+    }
+
+    .bar-fill.treasury {
+      background: var(--amber);
+    }
+
+    .status-line {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .status {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      background: #fbfcfb;
+    }
+
+    .status strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 18px;
+      overflow-wrap: anywhere;
+    }
+
+    .callout {
+      border: 1px solid #e6d29a;
+      background: #fff9e8;
+      border-radius: var(--radius);
+      padding: 14px;
+      color: #5f4615;
+      line-height: 1.5;
+      margin-top: 14px;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: #1f2523;
+      color: #f7f8f6;
+      border-radius: var(--radius);
+      padding: 14px;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 10px 0 22px;
+    }
+
+    @media (max-width: 900px) {
+      .topbar,
+      .section-head {
+        display: block;
+      }
+
+      .network-pill {
+        margin-top: 12px;
+        display: inline-block;
+      }
+
+      .metrics,
+      .proof-grid,
+      .economics,
+      .scenario-grid,
+      .status-line,
+      .lifecycle {
+        grid-template-columns: 1fr;
+      }
+
+      .section-meta {
+        text-align: left;
+        margin-top: 6px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .shell {
+        padding: 16px;
+      }
+
+      .bar-row {
+        grid-template-columns: 1fr;
+      }
+
+      th,
+      td {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="topbar">
+      <div>
+        <h1>FlowPass</h1>
+        <p class="subtitle">Prepaid volume passes for Uniswap v4 dynamic-fee pools. The current demo shows a pass purchase, discounted exact-input swap, quota consumption, and testnet proof on Unichain Sepolia.</p>
+      </div>
+      <div class="network-pill">Unichain Sepolia · chain 1301</div>
+    </div>
+
+    <section class="grid metrics" aria-label="Project metrics">
+      <div class="metric">
+        <div class="metric-label">Hook status</div>
+        <div class="metric-value">Deployed</div>
+        <div class="metric-note">Real v4 beforeSwap and afterSwap adapter</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Local tests</div>
+        <div class="metric-value">31 / 31</div>
+        <div class="metric-note">Core hook, v4 adapter, router, PoolManager path</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Base -> discount</div>
+        <div class="metric-value">1 bp -> 0.5 bp</div>
+        <div class="metric-note">Dynamic LP fee override for active pass holders</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Pass tier</div>
+        <div class="metric-value">$300 / $10M</div>
+        <div class="metric-note">Seven-day quota in mock-token demo units</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <h2>Lifecycle</h2>
+        <div class="section-meta">single-wallet pass, exact-input discount path</div>
+      </div>
+      <div class="lifecycle">
+        <div class="step">
+          <div class="step-title">1. Buy pass</div>
+          <p class="step-text">Trader pays the upfront pass price. FlowPass records quota and expiry against the pool id and trader wallet.</p>
+        </div>
+        <div class="step">
+          <div class="step-title">2. Swap through router</div>
+          <p class="step-text">FlowPassRouter forwards trader identity in hookData and routes the exact-input swap through PoolManager.</p>
+        </div>
+        <div class="step">
+          <div class="step-title">3. Apply discount</div>
+          <p class="step-text">beforeSwap returns the discounted dynamic fee only when the pass is active and quota covers the requested input.</p>
+        </div>
+        <div class="step">
+          <div class="step-title">4. Consume quota</div>
+          <p class="step-text">afterSwap deducts actual input volume. Expired or insufficient passes fall back to the base fee path.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <h2>Parameter Sandbox</h2>
+        <div class="section-meta">production calibration inputs</div>
+      </div>
+      <div class="grid economics">
+        <div class="controls">
+          <div class="control">
+            <div class="control-top">
+              <span class="field-label">Quota volume</span>
+              <strong id="quotaLabel">$10.0M</strong>
+            </div>
+            <input id="quotaInput" type="range" min="1" max="50" step="1" value="10">
+          </div>
+          <div class="control">
+            <div class="control-top">
+              <span class="field-label">Pass price</span>
+              <strong id="priceLabel">$300</strong>
+            </div>
+            <input id="priceInput" type="range" min="50" max="3000" step="50" value="300">
+          </div>
+          <div class="control">
+            <div class="control-top">
+              <span class="field-label">Base fee pips</span>
+              <strong id="baseFeeLabel">100</strong>
+            </div>
+            <input id="baseFeeInput" type="range" min="20" max="500" step="10" value="100">
+          </div>
+          <div class="control">
+            <div class="control-top">
+              <span class="field-label">Discount fee pips</span>
+              <strong id="discountFeeLabel">50</strong>
+            </div>
+            <input id="discountFeeInput" type="range" min="10" max="250" step="10" value="50">
+          </div>
+          <div class="control">
+            <div class="control-top">
+              <span class="field-label">LP upfront share</span>
+              <strong id="lpShareLabel">70%</strong>
+            </div>
+            <input id="lpShareInput" type="range" min="0" max="100" step="5" value="70">
+          </div>
+        </div>
+
+        <div>
+          <div class="scenario-grid">
+            <div class="scenario">
+              <div class="metric-label">Trader full-quota savings</div>
+              <div class="scenario-value" id="traderSavings">$200</div>
+              <div class="metric-note">base fee cost minus discount fee cost and pass price</div>
+            </div>
+            <div class="scenario">
+              <div class="metric-label">Trader break-even volume</div>
+              <div class="scenario-value" id="breakEven">$6.0M</div>
+              <div class="metric-note">volume needed before pass purchase pays back</div>
+            </div>
+            <div class="scenario">
+              <div class="metric-label">LP delta vs same-pool base</div>
+              <div class="scenario-value" id="lpDelta">-$290</div>
+              <div class="metric-note">discount fees plus LP reserve versus base fees</div>
+            </div>
+          </div>
+
+          <div class="bar-stack" aria-label="Economic bars">
+            <div class="bar-row">
+              <span>Base fee revenue</span>
+              <div class="bar-track"><div class="bar-fill base" id="baseBar"></div></div>
+              <strong id="baseCost">$1,000</strong>
+            </div>
+            <div class="bar-row">
+              <span>Discount fee revenue</span>
+              <div class="bar-track"><div class="bar-fill discount" id="discountBar"></div></div>
+              <strong id="discountCost">$500</strong>
+            </div>
+            <div class="bar-row">
+              <span>LP upfront reserve</span>
+              <div class="bar-track"><div class="bar-fill lp" id="lpBar"></div></div>
+              <strong id="lpReserve">$210</strong>
+            </div>
+            <div class="bar-row">
+              <span>Treasury reserve</span>
+              <div class="bar-track"><div class="bar-fill treasury" id="treasuryBar"></div></div>
+              <strong id="treasuryReserve">$90</strong>
+            </div>
+          </div>
+
+          <div class="status-line">
+            <div class="status">
+              <span class="metric-label">LP if flow was lost</span>
+              <strong id="lpRetained">$710</strong>
+            </div>
+            <div class="status">
+              <span class="metric-label">LP make-whole ratio</span>
+              <strong id="lpRatio">71%</strong>
+            </div>
+            <div class="status">
+              <span class="metric-label">Treasury upfront capture</span>
+              <strong id="treasuryCapture">$90</strong>
+            </div>
+          </div>
+
+          <div class="callout" id="scenarioNote"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <h2>Testnet Proof</h2>
+        <div class="section-meta">broadcasted mock-token end-to-end demo</div>
+      </div>
+      <div class="grid proof-grid">
+        <table class="address-table" aria-label="Deployed addresses">
+          <thead>
+            <tr><th>Item</th><th>Address</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>FlowPassV4Hook</td><td><a href="https://unichain-sepolia.blockscout.com/address/0xEfEf9F8aC2B1fEC9b173Ae3530Cdeb1407BC80C0">0xEfEf9F8aC2B1fEC9b173Ae3530Cdeb1407BC80C0</a></td></tr>
+            <tr><td>FlowPassRouter</td><td><a href="https://unichain-sepolia.blockscout.com/address/0xD22505dD65B985FBf47c2030a6421536fe0C3159">0xD22505dD65B985FBf47c2030a6421536fe0C3159</a></td></tr>
+            <tr><td>Mock token A</td><td>0xd119Da24acdc69190C0a12c1CCD64115c38DE6ac</td></tr>
+            <tr><td>Mock token B</td><td>0xf06219433b255A42667EFD5F0177194Fa6Dbe0f9</td></tr>
+            <tr><td>Pool id</td><td>0x6770d05ee2d5efb0a94ea7f27c5212b580b17c1d045c52b3505797721d9c9acb</td></tr>
+          </tbody>
+        </table>
+
+        <table class="tx-table" aria-label="Key transactions">
+          <thead>
+            <tr><th>Action</th><th>Transaction</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Deploy hook</td><td><a href="https://unichain-sepolia.blockscout.com/tx/0xfbf8bd1ae03bf2fc93bf8bf2716ae02860bf679f96b4d437891ddd7ca5725b2a">0xfbf8bd1a...</a></td></tr>
+            <tr><td>Deploy router</td><td><a href="https://unichain-sepolia.blockscout.com/tx/0xc3f9f19df1eb1abddda668081913e95e09e6d95f9e374d80680d61925e7c4cc9">0xc3f9f19d...</a></td></tr>
+            <tr><td>Initialize pool</td><td><a href="https://unichain-sepolia.blockscout.com/tx/0x25e3982751e62a462a05f06895fde6b7c4549d9a03de9a6bccc549300dd3aaf3">0x25e39827...</a></td></tr>
+            <tr><td>Buy pass</td><td><a href="https://unichain-sepolia.blockscout.com/tx/0x0a53275caa4add7cab4dfc1dc17750460fe70859a832e83159d6369fe3d0f38b">0x0a53275c...</a></td></tr>
+            <tr><td>Swap</td><td><a href="https://unichain-sepolia.blockscout.com/tx/0xdf2970c1b82d94ebb29b0fb9793d4d6bfae0fba8f8f497a0ec251256a9b6f09d">0xdf2970c1...</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <h2>Pass State Check</h2>
+        <div class="section-meta">read-only verification</div>
+      </div>
+      <div class="status-line">
+        <div class="status">
+          <span class="metric-label">Remaining quota</span>
+          <strong id="remainingQuota">9,999,999.993982</strong>
+        </div>
+        <div class="status">
+          <span class="metric-label">Pass expiry</span>
+          <strong id="expiryDate">loading</strong>
+        </div>
+        <div class="status">
+          <span class="metric-label">Deployment wallet balance</span>
+          <strong>0.0499906963 ETH</strong>
+        </div>
+      </div>
+      <pre><code>cast call 0xEfEf9F8aC2B1fEC9b173Ae3530Cdeb1407BC80C0 "passes(bytes32,address)(uint128,uint64)" 0x6770d05ee2d5efb0a94ea7f27c5212b580b17c1d045c52b3505797721d9c9acb 0x775717A1460Cce9Ee3c729a0625f09966F72B628 --rpc-url https://sepolia.unichain.org</code></pre>
+    </section>
+
+    <p class="footer">MVP limits: mock tokens on testnet, custom exact-input router, no standard router quoting, no frontend transaction signing, no audit, and no production parameter calibration yet.</p>
+  </main>
+
+  <script>
+    const USD = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+    const NUMBER = new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 });
+    const MILLION = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
+    const PIP_DENOMINATOR = 1_000_000;
+    const PASS_EXPIRY = 1781497997;
+
+    const inputs = {
+      quota: document.getElementById("quotaInput"),
+      price: document.getElementById("priceInput"),
+      baseFee: document.getElementById("baseFeeInput"),
+      discountFee: document.getElementById("discountFeeInput"),
+      lpShare: document.getElementById("lpShareInput")
+    };
+
+    const el = (id) => document.getElementById(id);
+
+    function dollars(value) {
+      const rounded = Math.round(value);
+      return USD.format(rounded);
+    }
+
+    function millions(value) {
+      return "$" + MILLION.format(value / 1_000_000) + "M";
+    }
+
+    function setBar(id, value, max) {
+      const width = max > 0 ? Math.max(2, Math.min(100, (value / max) * 100)) : 2;
+      el(id).style.width = width + "%";
+    }
+
+    function calculate() {
+      const quota = Number(inputs.quota.value) * 1_000_000;
+      const price = Number(inputs.price.value);
+      let baseFee = Number(inputs.baseFee.value);
+      let discountFee = Number(inputs.discountFee.value);
+      const lpSharePct = Number(inputs.lpShare.value);
+
+      if (discountFee >= baseFee) {
+        discountFee = Math.max(10, baseFee - 10);
+        inputs.discountFee.value = discountFee;
+      }
+
+      const baseCost = quota * baseFee / PIP_DENOMINATOR;
+      const discountCost = quota * discountFee / PIP_DENOMINATOR;
+      const feeSavings = baseCost - discountCost;
+      const lpReserve = price * lpSharePct / 100;
+      const treasuryReserve = price - lpReserve;
+      const traderSavings = feeSavings - price;
+      const breakEven = feeSavings > 0 ? price / ((baseFee - discountFee) / PIP_DENOMINATOR) : Infinity;
+      const lpWithPass = discountCost + lpReserve;
+      const lpDelta = lpWithPass - baseCost;
+      const lpRatio = baseCost > 0 ? lpWithPass / baseCost : 0;
+      const maxBar = Math.max(baseCost, discountCost, lpReserve, treasuryReserve, 1);
+
+      el("quotaLabel").textContent = millions(quota);
+      el("priceLabel").textContent = dollars(price);
+      el("baseFeeLabel").textContent = String(baseFee);
+      el("discountFeeLabel").textContent = String(discountFee);
+      el("lpShareLabel").textContent = lpSharePct + "%";
+
+      el("traderSavings").textContent = dollars(traderSavings);
+      el("traderSavings").style.color = traderSavings >= 0 ? "var(--green)" : "var(--red)";
+      el("breakEven").textContent = Number.isFinite(breakEven) ? millions(breakEven) : "n/a";
+      el("lpDelta").textContent = dollars(lpDelta);
+      el("lpDelta").style.color = lpDelta >= 0 ? "var(--green)" : "var(--red)";
+
+      el("baseCost").textContent = dollars(baseCost);
+      el("discountCost").textContent = dollars(discountCost);
+      el("lpReserve").textContent = dollars(lpReserve);
+      el("treasuryReserve").textContent = dollars(treasuryReserve);
+      el("lpRetained").textContent = dollars(lpWithPass);
+      el("lpRatio").textContent = NUMBER.format(lpRatio * 100) + "%";
+      el("treasuryCapture").textContent = dollars(treasuryReserve);
+
+      setBar("baseBar", baseCost, maxBar);
+      setBar("discountBar", discountCost, maxBar);
+      setBar("lpBar", lpReserve, maxBar);
+      setBar("treasuryBar", treasuryReserve, maxBar);
+
+      const note = lpDelta < 0
+        ? "At these settings, LPs earn less than they would if the same trader volume was already captive. The pass still helps if it retains or attracts flow that would otherwise leave the pool."
+        : "At these settings, LPs are made whole versus the same-pool base-fee benchmark before considering any retained volume.";
+      el("scenarioNote").textContent = note;
+    }
+
+    function init() {
+      Object.values(inputs).forEach((input) => input.addEventListener("input", calculate));
+      el("expiryDate").textContent = new Date(PASS_EXPIRY * 1000).toLocaleString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+      calculate();
+    }
+
+    init();
+  </script>
+</body>
+</html>
