@@ -1,5 +1,7 @@
 # FlowPass
 
+GitHub: https://github.com/Joezhouzmz/FlowPass
+
 FlowPass is a local MVP for a Uniswap v4-style dynamic fee hook that gives prepaid
 membership pass holders discounted swap fees for a fixed amount of future USD volume.
 
