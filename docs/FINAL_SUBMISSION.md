@@ -8,6 +8,10 @@ FlowPass
 
 https://github.com/Joezhouzmz/FlowPass
 
+## Live Demo
+
+https://flowpass.joezhouzmz.workers.dev/
+
 ## Short Description
 
 FlowPass is a Uniswap v4 dynamic-fee hook that works like a prepaid trading
@@ -29,6 +33,7 @@ expired or quota is insufficient, the trader falls back to the base fee.
 - Frontend: read-only dashboard in `frontend/index.html`, including a parameter
   sandbox for trader savings, LP make-whole analysis, treasury capture, and
   extra retained flow economics.
+- Public demo URL: `https://flowpass.joezhouzmz.workers.dev/`.
 
 ## Testnet Deployment
 
