@@ -545,14 +545,9 @@
               <div class="metric-note">volume needed before pass purchase pays back</div>
             </div>
             <div class="scenario">
-              <div class="metric-label">LP cannibalization delta</div>
-              <div class="scenario-value" id="lpDelta">-$290</div>
-              <div class="metric-note">before extra flow; discount fees plus LP reserve versus base fees</div>
-            </div>
-            <div class="scenario">
               <div class="metric-label">LP total delta incl. retained flow</div>
               <div class="scenario-value" id="lpTotalDelta">$0</div>
-              <div class="metric-note">LP revenue after adding extra-flow swap fees</div>
+              <div class="metric-note">discount fees, LP upfront reserve, and extra-flow fees versus base fees</div>
             </div>
             <div class="scenario">
               <div class="metric-label">Protocol net value</div>
@@ -741,8 +736,6 @@
       el("traderSavings").textContent = dollars(traderSavings);
       el("traderSavings").style.color = traderSavings >= 0 ? "var(--green)" : "var(--red)";
       el("breakEven").textContent = Number.isFinite(breakEven) ? millions(breakEven) : "n/a";
-      el("lpDelta").textContent = dollars(lpDelta);
-      el("lpDelta").style.color = lpDelta >= 0 ? "var(--green)" : "var(--red)";
       el("lpTotalDelta").textContent = dollars(lpTotalDelta);
       el("lpTotalDelta").style.color = lpTotalDelta >= 0 ? "var(--green)" : "var(--red)";
       el("netRetainedValue").textContent = dollars(netRetainedValue);

@@ -71,9 +71,9 @@ This makes the mechanism easy to explain:
 - Without retained flow, LPs are worse off than the same-pool base-fee benchmark.
 - If FlowPass retains roughly `$6M` of flow that would otherwise leave, LPs are
   made whole and treasury still earns `$90`.
-- Within a single pass, treasury revenue is upfront and fixed. Treasury grows
-  with additional pass purchases or top-ups, not with swap volume inside one
-  already-purchased pass.
+- Current implementation splits the upfront pass payment into LP reserve and
+  treasury reserve. Swap fees are still LP fees. Treasury does not receive a
+  separate share of every swap in this MVP.
 
 ## Why These Defaults Are Defensible For Demo
 
