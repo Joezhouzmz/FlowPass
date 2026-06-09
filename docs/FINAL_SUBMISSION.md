@@ -26,7 +26,9 @@ expired or quota is insufficient, the trader falls back to the base fee.
 - Hook type: real Uniswap v4 `IHooks` adapter with `beforeSwap` and `afterSwap`.
 - Router: custom exact-input `FlowPassRouter` that forwards trader identity in
   `hookData`.
-- Frontend: read-only dashboard in `frontend/index.html`.
+- Frontend: read-only dashboard in `frontend/index.html`, including a parameter
+  sandbox for trader savings, LP make-whole analysis, treasury capture, and
+  extra retained flow economics.
 
 ## Testnet Deployment
 

@@ -65,7 +65,8 @@ http://127.0.0.1:8080
 ```
 
 The dashboard shows the testnet deployment, pass lifecycle, quota state, and a
-parameter sandbox for pass price, quota, discount fee, and LP/treasury split.
+parameter sandbox for pass price, quota, discount fee, LP/treasury split, and
+extra retained flow that FlowPass can attract by binding traders to the pool.
 
 ## Unichain Sepolia Demo
 

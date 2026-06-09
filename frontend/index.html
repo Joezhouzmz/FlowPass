@@ -259,7 +259,7 @@
 
     .scenario-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
       margin-bottom: 14px;
     }
@@ -321,6 +321,10 @@
 
     .bar-fill.treasury {
       background: var(--amber);
+    }
+
+    .bar-fill.incremental {
+      background: var(--red);
     }
 
     .status-line {
@@ -519,6 +523,13 @@
             </div>
             <input id="lpShareInput" type="range" min="0" max="100" step="5" value="70">
           </div>
+          <div class="control">
+            <div class="control-top">
+              <span class="field-label">Extra retained flow</span>
+              <strong id="extraFlowLabel">$15.0M</strong>
+            </div>
+            <input id="extraFlowInput" type="range" min="0" max="100" step="1" value="15">
+          </div>
         </div>
 
         <div>
@@ -537,6 +548,11 @@
               <div class="metric-label">LP delta vs same-pool base</div>
               <div class="scenario-value" id="lpDelta">-$290</div>
               <div class="metric-note">discount fees plus LP reserve versus base fees</div>
+            </div>
+            <div class="scenario">
+              <div class="metric-label">Net value from retained flow</div>
+              <div class="scenario-value" id="netRetainedValue">$0</div>
+              <div class="metric-note">LP plus treasury revenue after same-pool LP delta</div>
             </div>
           </div>
 
@@ -561,20 +577,25 @@
               <div class="bar-track"><div class="bar-fill treasury" id="treasuryBar"></div></div>
               <strong id="treasuryReserve">$90</strong>
             </div>
+            <div class="bar-row">
+              <span>Extra-flow LP fees</span>
+              <div class="bar-track"><div class="bar-fill incremental" id="extraLpBar"></div></div>
+              <strong id="extraLpFees">$0</strong>
+            </div>
           </div>
 
           <div class="status-line">
             <div class="status">
-              <span class="metric-label">LP if flow was lost</span>
+              <span class="metric-label">LP with pass + retained flow</span>
               <strong id="lpRetained">$710</strong>
+            </div>
+            <div class="status">
+              <span class="metric-label">Treasury with pass</span>
+              <strong id="treasuryCapture">$90</strong>
             </div>
             <div class="status">
               <span class="metric-label">LP make-whole ratio</span>
               <strong id="lpRatio">71%</strong>
-            </div>
-            <div class="status">
-              <span class="metric-label">Treasury upfront capture</span>
-              <strong id="treasuryCapture">$90</strong>
             </div>
           </div>
 
@@ -654,7 +675,8 @@
       price: document.getElementById("priceInput"),
       baseFee: document.getElementById("baseFeeInput"),
       discountFee: document.getElementById("discountFeeInput"),
-      lpShare: document.getElementById("lpShareInput")
+      lpShare: document.getElementById("lpShareInput"),
+      extraFlow: document.getElementById("extraFlowInput")
     };
 
     const el = (id) => document.getElementById(id);
@@ -679,6 +701,7 @@
       let baseFee = Number(inputs.baseFee.value);
       let discountFee = Number(inputs.discountFee.value);
       const lpSharePct = Number(inputs.lpShare.value);
+      const extraFlow = Number(inputs.extraFlow.value) * 1_000_000;
 
       if (discountFee >= baseFee) {
         discountFee = Math.max(10, baseFee - 10);
@@ -693,27 +716,34 @@
       const traderSavings = feeSavings - price;
       const breakEven = feeSavings > 0 ? price / ((baseFee - discountFee) / PIP_DENOMINATOR) : Infinity;
       const lpWithPass = discountCost + lpReserve;
+      const extraLpFees = extraFlow * discountFee / PIP_DENOMINATOR;
+      const lpWithRetainedFlow = lpWithPass + extraLpFees;
       const lpDelta = lpWithPass - baseCost;
-      const lpRatio = baseCost > 0 ? lpWithPass / baseCost : 0;
-      const maxBar = Math.max(baseCost, discountCost, lpReserve, treasuryReserve, 1);
+      const lpRatio = baseCost > 0 ? lpWithRetainedFlow / baseCost : 0;
+      const netRetainedValue = lpDelta + extraLpFees + treasuryReserve;
+      const maxBar = Math.max(baseCost, discountCost, lpReserve, treasuryReserve, extraLpFees, 1);
 
       el("quotaLabel").textContent = millions(quota);
       el("priceLabel").textContent = dollars(price);
       el("baseFeeLabel").textContent = String(baseFee);
       el("discountFeeLabel").textContent = String(discountFee);
       el("lpShareLabel").textContent = lpSharePct + "%";
+      el("extraFlowLabel").textContent = millions(extraFlow);
 
       el("traderSavings").textContent = dollars(traderSavings);
       el("traderSavings").style.color = traderSavings >= 0 ? "var(--green)" : "var(--red)";
       el("breakEven").textContent = Number.isFinite(breakEven) ? millions(breakEven) : "n/a";
       el("lpDelta").textContent = dollars(lpDelta);
       el("lpDelta").style.color = lpDelta >= 0 ? "var(--green)" : "var(--red)";
+      el("netRetainedValue").textContent = dollars(netRetainedValue);
+      el("netRetainedValue").style.color = netRetainedValue >= 0 ? "var(--green)" : "var(--red)";
 
       el("baseCost").textContent = dollars(baseCost);
       el("discountCost").textContent = dollars(discountCost);
       el("lpReserve").textContent = dollars(lpReserve);
       el("treasuryReserve").textContent = dollars(treasuryReserve);
-      el("lpRetained").textContent = dollars(lpWithPass);
+      el("extraLpFees").textContent = dollars(extraLpFees);
+      el("lpRetained").textContent = dollars(lpWithRetainedFlow);
       el("lpRatio").textContent = NUMBER.format(lpRatio * 100) + "%";
       el("treasuryCapture").textContent = dollars(treasuryReserve);
 
@@ -721,10 +751,11 @@
       setBar("discountBar", discountCost, maxBar);
       setBar("lpBar", lpReserve, maxBar);
       setBar("treasuryBar", treasuryReserve, maxBar);
+      setBar("extraLpBar", extraLpFees, maxBar);
 
-      const note = lpDelta < 0
-        ? "At these settings, LPs earn less than they would if the same trader volume was already captive. The pass still helps if it retains or attracts flow that would otherwise leave the pool."
-        : "At these settings, LPs are made whole versus the same-pool base-fee benchmark before considering any retained volume.";
+      const note = netRetainedValue < 0
+        ? "At these settings, the retained-flow upside does not fully offset the same-pool LP discount cost. Raise pass price, LP share, retained flow, or discount fee."
+        : "At these settings, FlowPass creates positive net value if the extra retained volume would otherwise have left the pool.";
       el("scenarioNote").textContent = note;
     }
 
