@@ -1,0 +1,7 @@
+name = "flowpass"
+compatibility_date = "2026-06-09"
+workers_dev = true
+
+[assets]
+directory = "./frontend"
+
