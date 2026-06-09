@@ -5,9 +5,12 @@
   "scripts": {
     "compile": "node tools/compile-solc.js",
     "dashboard": "python3 -m http.server 8080 --directory frontend",
-    "verify:testnet": "bash tools/verify-testnet.sh"
+    "verify:testnet": "bash tools/verify-testnet.sh",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "devDependencies": {
-    "solc": "0.8.26"
+    "solc": "0.8.26",
+    "wrangler": "^4.98.0"
   }
 }
