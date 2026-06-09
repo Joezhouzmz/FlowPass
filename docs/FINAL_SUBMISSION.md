@@ -14,14 +14,28 @@ https://flowpass.joezhouzmz.workers.dev/
 
 ## Short Description
 
-FlowPass is a Uniswap v4 dynamic-fee hook that works like a prepaid trading
-membership pass. A trader pays an upfront access fee to receive lower swap fees
-for a fixed amount of future exact-input trading volume before the pass expires.
+FlowPass is a Uniswap v4 fee-smoothing yield hook that works like a prepaid
+trading membership pass. A trader pays an upfront access fee to receive lower
+swap fees for a fixed amount of future exact-input trading volume before the
+pass expires.
 
 The hook stores each trader's remaining discounted volume and expiration time per
 pool. During swaps, active pass holders receive a lower dynamic LP fee. After the
 swap, the hook deducts actual input volume from the pass quota. When the pass is
 expired or quota is insufficient, the trader falls back to the base fee.
+
+## Theme Fit
+
+FlowPass addresses the 2026 UHI Hookathon theme under `Fee-Smoothing Hooks` and
+`Yield Systems`. It does not directly insure impermanent loss; instead, it
+improves the yield side of the LP tradeoff by turning recurring trader demand
+into upfront LP reserve, treasury revenue, and retained swap flow.
+
+The hook is designed for competitive pools where base LP fees can compress and
+flow can route away. A prepaid pass gives traders a reason to keep routing volume
+through the FlowPass pool, while LPs receive discounted swap fees plus an upfront
+reserve allocation. The dashboard shows how much extra retained flow is needed
+for LPs and the protocol to be better off.
 
 ## Demo Status
 
@@ -104,6 +118,8 @@ npm run verify:testnet
    PoolManager unlock, swap, settle, and take flow.
 6. The hook rejects static-fee pools because the discount relies on v4 dynamic LP
    fee overrides.
+7. The frontend explains the fee-smoothing economics: trader savings, LP reserve,
+   treasury capture, and the retained-flow threshold needed to offset discounts.
 
 ## Current MVP Parameters
 
@@ -147,3 +163,50 @@ math behind the current defaults.
 4. Add a transaction-signing frontend for buy pass, pass status, quote, and swap.
 5. Expand tests to include fuzzing, invariant tests, and adversarial hookData cases.
 6. Run external audit before handling real funds.
+
+## Form-Ready Answers
+
+### 1-2 Sentence Description
+
+FlowPass is a Uniswap v4 fee-smoothing yield hook that sells prepaid trading
+passes: traders pay upfront for discounted future swap volume, and the hook
+tracks quota and expiry per wallet. The pass revenue is split into LP reserve and
+treasury revenue, while the discount helps retain recurring order flow in
+competitive pools.
+
+### Theme Answer
+
+Yes, FlowPass addresses the theme under Fee-Smoothing Hooks and Yield Systems. It
+does not directly insure IL, but it improves LP yield stability by converting
+future order-flow demand into upfront LP reserve and by modeling the retained
+flow needed to offset discounted fees.
+
+### Tags
+
+Fee-Smoothing Hook, Yield System, Dynamic Fees, LP Revenue Smoothing, Trading
+Volume Rewards, Order Flow Retention, Uniswap v4, Unichain
+
+### Problem / Background
+
+In highly competitive pools, especially stablecoin-style routing markets, traders
+can choose between many similar venues. A small fee discount can attract flow,
+but it can also reduce LP revenue if the same flow would have stayed anyway.
+FlowPass was inspired by membership-card economics: make recurring traders commit
+upfront, then use discounted quota to create a reason for them to keep routing
+through the FlowPass pool.
+
+### Impact
+
+FlowPass turns swap-fee competition into a structured yield product. Traders get
+lower marginal execution costs after buying a pass, LPs get discounted swap fees
+plus an upfront reserve allocation, and the protocol captures prepaid revenue.
+The dashboard makes the key tradeoff explicit by showing when retained flow makes
+LPs and the protocol better off.
+
+### Challenges
+
+The hardest parts were translating a membership-pass model into real Uniswap v4
+hook mechanics, handling dynamic LP fee overrides correctly, and avoiding quota
+mis-accounting around swaps. The MVP also needed a custom exact-input router so
+the hook could receive trader identity in `hookData`, plus a clear explanation of
+why standard router quoting does not automatically understand pass discounts.

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">FlowPass project thumbnail</title>
+  <desc id="desc">Dark FlowPass thumbnail showing prepaid flow, LP reserve, and treasury capture.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#06111f"/>
+      <stop offset="0.55" stop-color="#0b1d2d"/>
+      <stop offset="1" stop-color="#10251f"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#55e6c1"/>
+      <stop offset="1" stop-color="#f5c86a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect x="54" y="54" width="1092" height="567" rx="30" fill="none" stroke="#244055" stroke-width="2"/>
+  <text x="92" y="135" fill="#eaf6f1" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="800">FlowPass</text>
+  <text x="96" y="188" fill="#91a7b4" font-family="Inter, Arial, sans-serif" font-size="28">Uniswap v4 fee-smoothing yield hook</text>
+  <g transform="translate(95 270)">
+    <rect x="0" y="0" width="270" height="132" rx="18" fill="#0f2433" stroke="#2c5366"/>
+    <text x="28" y="48" fill="#91a7b4" font-family="Inter, Arial, sans-serif" font-size="22">Trader pass</text>
+    <text x="28" y="96" fill="#eaf6f1" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800">$300</text>
+    <text x="28" y="124" fill="#55e6c1" font-family="Inter, Arial, sans-serif" font-size="18">$10M discounted quota</text>
+    <rect x="365" y="0" width="270" height="132" rx="18" fill="#0f2433" stroke="#2c5366"/>
+    <text x="393" y="48" fill="#91a7b4" font-family="Inter, Arial, sans-serif" font-size="22">LP reserve</text>
+    <text x="393" y="96" fill="#eaf6f1" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800">70%</text>
+    <text x="393" y="124" fill="#55e6c1" font-family="Inter, Arial, sans-serif" font-size="18">upfront yield buffer</text>
+    <rect x="730" y="0" width="270" height="132" rx="18" fill="#0f2433" stroke="#2c5366"/>
+    <text x="758" y="48" fill="#91a7b4" font-family="Inter, Arial, sans-serif" font-size="22">Treasury</text>
+    <text x="758" y="96" fill="#eaf6f1" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800">30%</text>
+    <text x="758" y="124" fill="#f5c86a" font-family="Inter, Arial, sans-serif" font-size="18">prepaid protocol revenue</text>
+    <path d="M285 66 H350" stroke="url(#line)" stroke-width="8" stroke-linecap="round"/>
+    <path d="M650 66 H715" stroke="url(#line)" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(94 494)">
+    <text x="0" y="0" fill="#eaf6f1" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">Prepay flow. Smooth LP yield. Retain volume.</text>
+    <text x="0" y="46" fill="#91a7b4" font-family="Inter, Arial, sans-serif" font-size="24">beforeSwap dynamic fee override + afterSwap quota accounting</text>
+  </g>
+</svg>

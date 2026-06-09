@@ -88,7 +88,7 @@
     }
 
     .metrics {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
       margin-bottom: 16px;
     }
 
@@ -429,12 +429,17 @@
     <div class="topbar">
       <div>
         <h1>FlowPass</h1>
-        <p class="subtitle">Prepaid volume passes for Uniswap v4 dynamic-fee pools. The current demo shows a pass purchase, discounted exact-input swap, quota consumption, and testnet proof on Unichain Sepolia.</p>
+        <p class="subtitle">A fee-smoothing yield hook for Uniswap v4 pools. FlowPass converts prepaid trading passes into upfront LP reserve and treasury revenue, then uses discounted quota to retain recurring order flow.</p>
       </div>
       <div class="network-pill">Unichain Sepolia · chain 1301</div>
     </div>
 
     <section class="grid metrics" aria-label="Project metrics">
+      <div class="metric">
+        <div class="metric-label">Theme fit</div>
+        <div class="metric-value">Fee smoothing</div>
+        <div class="metric-note">Yield system for prepaid flow retention</div>
+      </div>
       <div class="metric">
         <div class="metric-label">Hook status</div>
         <div class="metric-value">Deployed</div>
@@ -485,7 +490,7 @@
     <section class="panel">
       <div class="section-head">
         <h2>Parameter Sandbox</h2>
-        <div class="section-meta">production calibration inputs</div>
+        <div class="section-meta">fee-smoothing yield inputs</div>
       </div>
       <div class="grid economics">
         <div class="controls">
@@ -661,7 +666,7 @@
       <pre><code>cast call 0xEfEf9F8aC2B1fEC9b173Ae3530Cdeb1407BC80C0 "passes(bytes32,address)(uint128,uint64)" 0x6770d05ee2d5efb0a94ea7f27c5212b580b17c1d045c52b3505797721d9c9acb 0x775717A1460Cce9Ee3c729a0625f09966F72B628 --rpc-url https://sepolia.unichain.org</code></pre>
     </section>
 
-    <p class="footer">MVP limits: mock tokens on testnet, custom exact-input router, no standard router quoting, no frontend transaction signing, no audit, and no production parameter calibration yet.</p>
+    <p class="footer">Theme scope: FlowPass is a fee-smoothing yield system, not IL insurance. MVP limits: mock tokens on testnet, custom exact-input router, no standard router quoting, no frontend transaction signing, no audit, and no production parameter calibration yet.</p>
   </main>
 
   <script>

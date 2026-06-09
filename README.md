@@ -4,8 +4,10 @@ GitHub: https://github.com/Joezhouzmz/FlowPass
 
 Live demo: https://flowpass.joezhouzmz.workers.dev/
 
-FlowPass is a local MVP for a Uniswap v4-style dynamic fee hook that gives prepaid
-membership pass holders discounted swap fees for a fixed amount of future USD volume.
+FlowPass is a local MVP for a Uniswap v4-style fee-smoothing yield hook. It gives
+prepaid membership pass holders discounted swap fees for a fixed amount of future
+USD volume, while converting recurring order-flow demand into upfront LP reserve
+and treasury revenue.
 
 The project now includes a local Foundry test suite, a real Uniswap v4 hook
 adapter, a custom exact-input router, a broadcasted Unichain Sepolia mock-token
@@ -25,6 +27,18 @@ The MVP focuses on the core mechanism:
 - minimal exact-input `FlowPassRouter` for local PoolManager integration
 - router-level `amountOutMinimum` slippage protection
 - pass purchase and quota consumption restricted to the current FlowPass pool key
+
+## Hookathon Theme Fit
+
+FlowPass addresses the 2026 UHI Hookathon theme under `Fee-Smoothing Hooks` and
+`Yield Systems`.
+
+It is not an impermanent-loss insurance hook. Instead, it targets the LP yield
+side of the IL/yield tradeoff: traders prepay for discounted future volume, the
+hook splits that upfront revenue between an LP reserve and protocol treasury, and
+the pass incentive helps retain order flow that could otherwise route to a
+competing pool. The result is a mechanism for making LP fee yield more predictable
+and for offsetting fee compression in highly competitive pools.
 
 ## Local Test
 
@@ -72,9 +86,10 @@ Then visit:
 http://127.0.0.1:8080
 ```
 
-The dashboard shows the testnet deployment, pass lifecycle, quota state, and a
-parameter sandbox for pass price, quota, discount fee, LP/treasury split, and
-extra retained flow that FlowPass can attract by binding traders to the pool.
+The dashboard shows the testnet deployment, pass lifecycle, quota state, theme
+fit, and a parameter sandbox for pass price, quota, discount fee, LP/treasury
+split, and extra retained flow that FlowPass can attract by binding traders to
+the pool.
 The default retained-flow assumption is `$6M`, which is approximately the amount
 needed to make LPs whole under the current demo economics.
 

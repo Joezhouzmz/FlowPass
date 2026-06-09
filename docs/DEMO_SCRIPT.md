@@ -10,14 +10,15 @@
 
 ## One-Minute Pitch
 
-FlowPass is a Uniswap v4 dynamic-fee hook that works like a prepaid trading
-membership pass. A trader pays an upfront pass fee, receives lower swap fees for
-a fixed amount of future exact-input volume, and returns to the base fee after
-the quota is used or the pass expires.
+FlowPass is a Uniswap v4 fee-smoothing yield hook that works like a prepaid
+trading membership pass. A trader pays an upfront pass fee, receives lower swap
+fees for a fixed amount of future exact-input volume, and returns to the base fee
+after the quota is used or the pass expires.
 
-The business goal is to retain recurring order flow. Traders get lower marginal
-execution costs, LPs receive swap fees plus an upfront LP reserve, and the
-treasury receives upfront protocol revenue.
+The theme fit is Fee-Smoothing Hooks and Yield Systems. FlowPass does not
+directly insure impermanent loss; instead, it improves the LP yield side by
+turning recurring order-flow demand into upfront LP reserve, treasury revenue,
+and retained swap volume.
 
 ## Demo Flow
 
@@ -47,6 +48,7 @@ treasury receives upfront protocol revenue.
    - Increase or decrease extra retained flow.
    - Explain that LPs benefit when retained flow offsets the discount.
    - Explain that treasury revenue is upfront pass revenue in this MVP.
+   - Point out the LP break-even retained-flow threshold.
 
 5. Show testnet proof:
 
@@ -76,6 +78,5 @@ treasury receives upfront protocol revenue.
 ## Closing
 
 FlowPass demonstrates a membership-card style mechanism for Uniswap v4 pools:
-prepaid access revenue plus discounted quota can create a routing advantage when
-it retains flow that would otherwise leave the pool.
-
+prepaid access revenue plus discounted quota can smooth LP fee yield and create a
+routing advantage when it retains flow that would otherwise leave the pool.
