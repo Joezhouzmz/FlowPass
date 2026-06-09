@@ -67,6 +67,8 @@ http://127.0.0.1:8080
 The dashboard shows the testnet deployment, pass lifecycle, quota state, and a
 parameter sandbox for pass price, quota, discount fee, LP/treasury split, and
 extra retained flow that FlowPass can attract by binding traders to the pool.
+The default retained-flow assumption is `$6M`, which is approximately the amount
+needed to make LPs whole under the current demo economics.
 
 ## Unichain Sepolia Demo
 
@@ -138,6 +140,7 @@ them from historical USDC/USDT0 Unichain swap data.
 | `frontend/index.html` | Read-only visualization dashboard for demo and parameter calibration. |
 | `docs/FINAL_SUBMISSION.md` | Draft final Hookathon submission content. |
 | `docs/DATA_AND_PRICING_WORKFLOW.md` | Data workflow for production pass parameter calibration. |
+| `docs/PARAMETER_RATIONALE.md` | Mathematical rationale for the current demo defaults. |
 | `TESTNET_DEPLOYMENT.md` | Testnet deployment commands and required inputs. |
 | `tools/demo-flowpass.js` | Zero-dependency behavior demo when Solidity tooling is unavailable. |
 | `tools/verify-testnet.sh` | Read-only Unichain Sepolia verification script. |

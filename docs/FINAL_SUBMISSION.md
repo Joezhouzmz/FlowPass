@@ -110,10 +110,12 @@ npm run verify:testnet
 | Quota | `10,000,000` payment-token units |
 | Duration | `7 days` |
 | Revenue split | `70% LP reserve / 30% treasury reserve` |
+| Dashboard retained-flow assumption | `$6,000,000` |
 
 These values are demo parameters. The final production values should be
 calibrated from real pool volume, per-wallet repeat-flow behavior, route
-competition, and LP revenue impact.
+competition, and LP revenue impact. See `docs/PARAMETER_RATIONALE.md` for the
+math behind the current defaults.
 
 ## Known Limitations
 
