@@ -545,14 +545,19 @@
               <div class="metric-note">volume needed before pass purchase pays back</div>
             </div>
             <div class="scenario">
-              <div class="metric-label">LP delta vs same-pool base</div>
+              <div class="metric-label">LP cannibalization delta</div>
               <div class="scenario-value" id="lpDelta">-$290</div>
-              <div class="metric-note">discount fees plus LP reserve versus base fees</div>
+              <div class="metric-note">before extra flow; discount fees plus LP reserve versus base fees</div>
             </div>
             <div class="scenario">
-              <div class="metric-label">Net value from retained flow</div>
+              <div class="metric-label">LP total delta incl. retained flow</div>
+              <div class="scenario-value" id="lpTotalDelta">$0</div>
+              <div class="metric-note">LP revenue after adding extra-flow swap fees</div>
+            </div>
+            <div class="scenario">
+              <div class="metric-label">Protocol net value</div>
               <div class="scenario-value" id="netRetainedValue">$0</div>
-              <div class="metric-note">LP plus treasury revenue after same-pool LP delta</div>
+              <div class="metric-note">LP total delta plus treasury upfront capture</div>
             </div>
           </div>
 
@@ -594,8 +599,8 @@
               <strong id="treasuryCapture">$90</strong>
             </div>
             <div class="status">
-              <span class="metric-label">LP make-whole ratio</span>
-              <strong id="lpRatio">71%</strong>
+              <span class="metric-label">LP break-even retained flow</span>
+              <strong id="lpBreakEvenFlow">$5.8M</strong>
             </div>
           </div>
 
@@ -719,8 +724,11 @@
       const extraLpFees = extraFlow * discountFee / PIP_DENOMINATOR;
       const lpWithRetainedFlow = lpWithPass + extraLpFees;
       const lpDelta = lpWithPass - baseCost;
-      const lpRatio = baseCost > 0 ? lpWithRetainedFlow / baseCost : 0;
-      const netRetainedValue = lpDelta + extraLpFees + treasuryReserve;
+      const lpTotalDelta = lpWithRetainedFlow - baseCost;
+      const netRetainedValue = lpTotalDelta + treasuryReserve;
+      const retainedFlowNeeded = discountFee > 0 && lpDelta < 0
+        ? Math.abs(lpDelta) / (discountFee / PIP_DENOMINATOR)
+        : 0;
       const maxBar = Math.max(baseCost, discountCost, lpReserve, treasuryReserve, extraLpFees, 1);
 
       el("quotaLabel").textContent = millions(quota);
@@ -735,6 +743,8 @@
       el("breakEven").textContent = Number.isFinite(breakEven) ? millions(breakEven) : "n/a";
       el("lpDelta").textContent = dollars(lpDelta);
       el("lpDelta").style.color = lpDelta >= 0 ? "var(--green)" : "var(--red)";
+      el("lpTotalDelta").textContent = dollars(lpTotalDelta);
+      el("lpTotalDelta").style.color = lpTotalDelta >= 0 ? "var(--green)" : "var(--red)";
       el("netRetainedValue").textContent = dollars(netRetainedValue);
       el("netRetainedValue").style.color = netRetainedValue >= 0 ? "var(--green)" : "var(--red)";
 
@@ -744,7 +754,7 @@
       el("treasuryReserve").textContent = dollars(treasuryReserve);
       el("extraLpFees").textContent = dollars(extraLpFees);
       el("lpRetained").textContent = dollars(lpWithRetainedFlow);
-      el("lpRatio").textContent = NUMBER.format(lpRatio * 100) + "%";
+      el("lpBreakEvenFlow").textContent = millions(retainedFlowNeeded);
       el("treasuryCapture").textContent = dollars(treasuryReserve);
 
       setBar("baseBar", baseCost, maxBar);
@@ -755,7 +765,7 @@
 
       const note = netRetainedValue < 0
         ? "At these settings, the retained-flow upside does not fully offset the same-pool LP discount cost. Raise pass price, LP share, retained flow, or discount fee."
-        : "At these settings, FlowPass creates positive net value if the extra retained volume would otherwise have left the pool.";
+        : "At these settings, FlowPass creates positive net value if the extra retained volume would otherwise have left the pool. Treasury revenue is upfront and scales with pass purchases or top-ups, not with swap volume inside one pass.";
       el("scenarioNote").textContent = note;
     }
 

@@ -71,6 +71,9 @@ This makes the mechanism easy to explain:
 - Without retained flow, LPs are worse off than the same-pool base-fee benchmark.
 - If FlowPass retains roughly `$6M` of flow that would otherwise leave, LPs are
   made whole and treasury still earns `$90`.
+- Within a single pass, treasury revenue is upfront and fixed. Treasury grows
+  with additional pass purchases or top-ups, not with swap volume inside one
+  already-purchased pass.
 
 ## Why These Defaults Are Defensible For Demo
 
@@ -134,4 +137,3 @@ Public exchange pages can show whether Uniswap v4 on Unichain has meaningful
 overall activity, but they do not prove the exact FlowPass parameters. The
 missing piece is wallet-level recurring USDC/USDT0 flow and counterfactual route
 choice: whether the trader would have used this pool without the pass.
-
