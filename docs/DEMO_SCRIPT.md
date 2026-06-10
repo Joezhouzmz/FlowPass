@@ -15,8 +15,7 @@ trading membership pass. A trader pays an upfront pass fee, receives lower swap
 fees for a fixed amount of future exact-input volume, and returns to the base fee
 after the quota is used or the pass expires.
 
-The theme fit is Fee-Smoothing Hooks and Yield Systems. FlowPass does not
-directly insure impermanent loss; instead, it improves the LP yield side by
+The theme fit is Fee-Smoothing Hooks and Yield Systems. FlowPass improves the LP yield side by
 turning recurring order-flow demand into upfront LP reserve, treasury revenue,
 and retained swap volume.
 
