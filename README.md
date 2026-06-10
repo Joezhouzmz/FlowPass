@@ -33,7 +33,7 @@ The MVP focuses on the core mechanism:
 FlowPass addresses the 2026 UHI Hookathon theme under `Fee-Smoothing Hooks` and
 `Yield Systems`.
 
-It is not an impermanent-loss insurance hook. Instead, it targets the LP yield
+It targets the LP yield
 side of the IL/yield tradeoff: traders prepay for discounted future volume, the
 hook splits that upfront revenue between an LP reserve and protocol treasury, and
 the pass incentive helps retain order flow that could otherwise route to a
