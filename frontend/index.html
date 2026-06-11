@@ -153,6 +153,31 @@
       text-align: right;
     }
 
+    .thesis-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .thesis-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: #111714;
+      min-height: 126px;
+    }
+
+    .thesis-title {
+      margin: 0 0 8px;
+      font-size: 15px;
+      font-weight: 740;
+    }
+
+    .thesis-copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.48;
+    }
+
     .proof-grid {
       grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     }
@@ -398,6 +423,7 @@
       .economics,
       .scenario-grid,
       .status-line,
+      .thesis-grid,
       .lifecycle {
         grid-template-columns: 1fr;
       }
@@ -459,6 +485,27 @@
         <div class="metric-label">Pass tier</div>
         <div class="metric-value">$300 / $10M</div>
         <div class="metric-note">Seven-day quota in mock-token demo units</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <h2>Commercial Thesis</h2>
+        <div class="section-meta">membership economics for AMMs</div>
+      </div>
+      <div class="grid thesis-grid">
+        <div class="thesis-card">
+          <h3 class="thesis-title">Prepaid commitment</h3>
+          <p class="thesis-copy">Like a membership card, the trader pays upfront before receiving lower future swap fees.</p>
+        </div>
+        <div class="thesis-card">
+          <h3 class="thesis-title">Lower marginal cost</h3>
+          <p class="thesis-copy">The pool earns less per pass swap, but active traders have a reason to route more volume through this venue.</p>
+        </div>
+        <div class="thesis-card">
+          <h3 class="thesis-title">Shared upside</h3>
+          <p class="thesis-copy">LPs can benefit from retained flow, traders get better execution costs, and the hook treasury captures upfront revenue.</p>
+        </div>
       </div>
     </section>
 

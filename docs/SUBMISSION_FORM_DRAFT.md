@@ -49,19 +49,31 @@ the retained flow needed to offset discounted fees.
 ## Problem / Background
 
 In highly competitive pools, especially stablecoin-style routing markets, traders
-can choose between many similar venues. A small fee discount can attract flow,
-but it can also reduce LP revenue if the same flow would have stayed anyway.
-FlowPass was inspired by membership-card economics: make recurring traders commit
-upfront, then use discounted quota to create a reason for them to keep routing
-through the FlowPass pool.
+can choose between many similar venues. Prices, liquidity, fees, and routing are
+transparent, and traders can switch pools with very low friction. A simple fee
+discount may attract flow, but it can also reduce LP revenue if the same flow
+would have stayed anyway.
+
+FlowPass is inspired by Costco-style membership economics: a user pays upfront,
+then receives lower prices later. The merchant may earn less per transaction, but
+the membership creates commitment, repeat usage, and higher total volume.
+FlowPass applies this idea to AMMs by asking recurring traders to prepay for a
+time-limited discounted quota, giving them a reason to keep routing through the
+FlowPass pool.
 
 ## Impact
 
-FlowPass turns swap-fee competition into a structured yield product. Traders get
-lower marginal execution costs after buying a pass, LPs get discounted swap fees
-plus an upfront reserve allocation, and the protocol captures prepaid revenue.
-The dashboard makes the key tradeoff explicit by showing when retained flow makes
-LPs and the protocol better off.
+FlowPass turns swap-fee competition into a structured yield product and business
+model. Traders get lower marginal execution costs after buying a pass, LPs get
+discounted swap fees plus an upfront reserve allocation, and the protocol captures
+prepaid revenue through the hook treasury.
+
+The project also shows why hooks matter commercially, not only technically. In a
+transparent AMM market, purely technical advantages can be copied or arbitraged
+away. FlowPass creates pool-level differentiation through prepaid access, quota,
+expiry, and revenue sharing. It also gives hook creators a path to sustainable
+treasury revenue, which can help incentivize more serious mechanism design in the
+Uniswap v4 hook ecosystem.
 
 ## Challenges
 

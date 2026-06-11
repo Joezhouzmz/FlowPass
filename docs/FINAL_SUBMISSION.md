@@ -37,6 +37,21 @@ through the FlowPass pool, while LPs receive discounted swap fees plus an upfron
 reserve allocation. The dashboard shows how much extra retained flow is needed
 for LPs and the protocol to be better off.
 
+## Innovation
+
+FlowPass applies membership-card economics to AMM routing. Similar to Costco, a
+trader pays upfront and receives lower marginal prices later. The pool may earn
+less per swap, but the pass creates commitment, urgency, and repeat usage, which
+can increase total fee yield when it retains order flow that would otherwise
+route elsewhere.
+
+This matters because AMM markets are highly transparent and competitive. If a
+pool only competes with a static fee, its advantage is easy to copy or route
+around. FlowPass creates a different kind of edge: a prepaid commercial
+relationship between traders, LPs, and the hook creator. LPs can receive upfront
+reserve plus retained volume, traders receive lower marginal execution cost, and
+the hook treasury earns revenue for designing and maintaining the mechanism.
+
 ## Demo Status
 
 - Local Foundry tests: 31 passing tests.
@@ -189,19 +204,27 @@ Volume Rewards, Order Flow Retention, Uniswap v4, Unichain
 ### Problem / Background
 
 In highly competitive pools, especially stablecoin-style routing markets, traders
-can choose between many similar venues. A small fee discount can attract flow,
-but it can also reduce LP revenue if the same flow would have stayed anyway.
-FlowPass was inspired by membership-card economics: make recurring traders commit
-upfront, then use discounted quota to create a reason for them to keep routing
-through the FlowPass pool.
+can choose between many similar venues. Prices, fees, liquidity, and execution
+quality are transparent, and traders can switch routes with little friction. A
+simple fee discount may attract flow, but it can also reduce LP revenue if that
+same flow would have stayed anyway.
+
+FlowPass was inspired by Costco-style membership economics: make recurring
+traders commit upfront, then use discounted quota and expiry to give them a
+reason to keep routing through the FlowPass pool. The goal is to move AMM
+competition beyond one-swap fee wars and toward durable commercial relationships.
 
 ### Impact
 
-FlowPass turns swap-fee competition into a structured yield product. Traders get
-lower marginal execution costs after buying a pass, LPs get discounted swap fees
-plus an upfront reserve allocation, and the protocol captures prepaid revenue.
-The dashboard makes the key tradeoff explicit by showing when retained flow makes
-LPs and the protocol better off.
+FlowPass turns swap-fee competition into a structured yield product and business
+model. Traders get lower marginal execution costs after buying a pass, LPs get
+discounted swap fees plus an upfront reserve allocation, and the protocol captures
+prepaid revenue through the hook treasury.
+
+The impact is broader than one pool. If useful hooks can earn treasury revenue,
+hook creators have a clearer incentive to build and maintain production-grade
+DeFi mechanisms. FlowPass shows how v4 hooks can support both technical
+innovation and sustainable mechanism-level business models.
 
 ### Challenges
 

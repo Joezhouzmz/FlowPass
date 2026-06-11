@@ -40,6 +40,30 @@ the pass incentive helps retain order flow that could otherwise route to a
 competing pool. The result is a mechanism for making LP fee yield more predictable
 and for offsetting fee compression in highly competitive pools.
 
+## Business Thesis
+
+FlowPass brings membership-card economics to AMMs. In a Costco-style model, a
+customer pays upfront for membership and then receives lower prices. The merchant
+appears to earn less per purchase, but the membership creates commitment, repeat
+usage, and higher total volume.
+
+AMM routing is close to a perfectly competitive market: prices, liquidity, fees,
+and execution quality are transparent, and traders can switch pools with very low
+friction. In that environment, a pool that only competes on static fees has little
+durable edge because visible opportunities are quickly arbitraged or copied.
+
+FlowPass changes the competition from a one-swap fee war into a prepaid
+relationship. Traders commit upfront to a FlowPass-enabled pool, receive a lower
+marginal execution cost, and have a time-limited reason to route more volume
+through the same venue. LPs can benefit when retained or incremental flow offsets
+the lower per-swap fee, while the hook treasury captures upfront revenue for
+designing and maintaining the mechanism.
+
+The innovation is therefore not simply "lower fees." It is a commercial model
+for DeFi pools: use prepaid access, quota, expiry, and revenue sharing to create
+pool-level differentiation in a market where purely technical advantages are
+often competed away.
+
 ## Local Test
 
 ```bash
