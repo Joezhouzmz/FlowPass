@@ -2,7 +2,7 @@
 
 GitHub: https://github.com/Joezhouzmz/FlowPass
 
-Live demo: https://flowpass.joezhouzmz.workers.dev/
+Demo frontend: https://flowpass.joezhouzmz.workers.dev/
 
 FlowPass is a local MVP for a Uniswap v4-style fee-smoothing yield hook. It gives
 prepaid membership pass holders discounted swap fees for a fixed amount of future
